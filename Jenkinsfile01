@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout Source Code') {
             steps {
-                git changelog: false, poll: false, url: 'https://github.com/Madhav0987/onlinebookstore.git'
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/Madhav0987/sonarqube-example.git'
             }
         }
 		stage('building artifact and unit testing'){
