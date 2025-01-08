@@ -1,21 +1,23 @@
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-application
-  labels:
-    app: my-application
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: my-application
-  template:
-    metadata:
-      labels:
-        app: my-application
-    spec:
-      containers:
-      - name: my-application
-        image: venkatchalla841/myapplications:latest
-        ports:
-        - containerPort: 8080
+   name: nginx
+   labels: 
+     app: ubuntu-ds
+   spec:
+   replicas: 2
+   selector: 
+      matchLabels:
+         app: ubuntu-ds
+template:
+ metadata:
+   name: nginx
+   labels:
+     app: ubuntu-ds
+   spec: 
+   containers:
+     - name: My-container
+       image: 515966525347.dkr.ecr.ap-south-1.amazonaws.com/assignment:v1
+       ports:
+         containerPort: 80
