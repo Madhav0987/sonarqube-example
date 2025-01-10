@@ -4,9 +4,9 @@ pipeline {
     environment {
         REPOSITORY_URI = "515966525347.dkr.ecr.ap-south-1.amazonaws.com/assignment"
 	SCANNER_HOME= tool 'Sonar-scanner'
-        AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}
-        AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}
-        AWS_DEFAULT_REGION=${env.AWS_DEFAULT_REGION}        
+        AWS_ACCESS_KEY_ID="${env.AWS_ACCESS_KEY_ID}"
+        AWS_SECRET_ACCESS_KEY="${env.AWS_SECRET_ACCESS_KEY}"
+        AWS_DEFAULT_REGION="${env.AWS_DEFAULT_REGION}"        
     }
     stages {
         stage('Checkout Source Code') {
