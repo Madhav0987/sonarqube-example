@@ -28,11 +28,15 @@ pipeline {
       }
         stage('Build Docker Image') {
             steps {
-                sh """
-                    docker build -t ubuntu:v1 .
-                """
-            }
-        }
+                script{
+                    withDockerRegistry(credentialsId: '89875bf9-ecc3-4b16-9e52-5ec3c6de1c50', toolName: 'Docker') {
+                        sh """
+                            docker build -t ubuntu:v1 .
+                        """
+                    }
+                  }
+                }
+             }
         stage('Push to AWS ECR') {
             steps {
                 script {
