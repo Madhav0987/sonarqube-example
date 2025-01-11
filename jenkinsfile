@@ -1,0 +1,61 @@
+pipeline {
+    agent any
+    environment {
+        REPOSITORY_URI = "515966525347.dkr.ecr.ap-south-1.amazonaws.com/assignment"
+		    SCANNER_HOME= tool 'sonar-scanner'
+        DOCKER_IMAGE = "shrikant712/docker:latest"
+    }
+    stages {
+        stage('Checkout Source Code') {
+            steps {
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/Madhav0987/sonarqube-example.git'
+            }
+        }
+		stage('building artifact and unit testing'){
+		    steps{
+			    sh 'mvn clean package'
+				}
+			}
+		stage('static-code analysis'){
+	     steps{
+	         withSonarQubeEnv('Sonar-server') {
+	             sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.url=http://13.127.125.174:9000/ -Dsonar.projectName="Java WebApp" \
+	              -Dsonar.java.binaries=. \
+                  -Dsonar.projectKey=Java-WebApp '''
+
+        }
+       }
+      }
+        stage('Build Docker Image') {
+            steps {
+                script{
+                    withDockerRegistry(credentialsId: '89875bf9-ecc3-4b16-9e52-5ec3c6de1c50', toolName: 'Docker') {
+                        sh """
+                            docker build -t ubuntu:v1 .
+                        """
+                    }
+                  }
+                }
+            }  
+          stage('Push to DockerHub') {
+            steps {
+                script {
+                        withCredentials([string(credentialsId: 'Dockerhub-password', variable: 'Dockerhub')]) {
+                        sh 'docker login -u shrikant712 -p ${Dockerhub}'
+                 }
+                        sh 'docker tag ubuntu:v1 ${DOCKER_IMAGE}'
+                        sh 'docker push ${DOCKER_IMAGE}'                   
+                }
+            }
+        }
+        stage('deplyoing to kubernetes'){
+		    steps{
+			  withKubeConfig([credentialsId: 'kubeconfig-secret-id']) {
+                    sh 'kubectl apply -f deployment.yaml'
+                    
+                }
+            }
+        }
+			   
+    }
+}
