@@ -40,9 +40,9 @@ pipeline {
           stage('Push to DockerHub') {
             steps {
                 script {
-                        withCredentials([string(credentialsId: 'Dockerhub-password', variable: 'Dockerhub')]) {
-                        sh 'docker login -u shrikant712 -p ${Dockerhub}'
-                 }
+                        withCredentials([string(credentialsId: 'Dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                        sh 'docker login -u shrikant712 -p ${dockerhubpwd}'
+                      }
                         sh 'docker tag ubuntu:v1 ${DOCKER_IMAGE}'
                         sh 'docker push ${DOCKER_IMAGE}'                   
                 }
