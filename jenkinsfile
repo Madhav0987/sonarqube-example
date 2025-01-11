@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         REPOSITORY_URI = "515966525347.dkr.ecr.ap-south-1.amazonaws.com/assignment"
-		    SCANNER_HOME= tool 'sonar-scanner'
+		    SCANNER_HOME= tool 'Sonar-scanner'
         DOCKER_IMAGE = "shrikant712/docker:latest"
     }
     stages {
