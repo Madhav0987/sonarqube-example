@@ -18,6 +18,6 @@ template:
    spec: 
    containers:
      - name: My-container
-       image: 515966525347.dkr.ecr.ap-south-1.amazonaws.com/assignment:v1
+       image: shrikant712/docker:latest
        ports:
          containerPort: 80
